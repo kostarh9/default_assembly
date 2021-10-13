@@ -1,0 +1,227 @@
+//https://sass-scss.ru/documentation
+
+//var
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
+
+//import
+@import 'reset';
+
+//mixin
+@mixin transform($property, $defaultValue: 5px) {
+  -webkit-transform: $property;
+  -ms-transform: $property;
+  transform: $property;
+}
+.box { @include transform(rotate(30deg)); }
+
+@mixin does-parent-exist {
+  @if & {
+    &:hover {
+      color: red;
+    }
+  } @else {
+    a {
+      color: red;
+    }
+  }
+}
+//mixin with block content
+@mixin apply-to-ie6-only {
+  * html {
+    @content;
+  }
+}
+@include apply-to-ie6-only {
+  #logo {
+    background-image: url(/logo.gif);
+  }
+} =>
+   * html #logo {
+     background-image: url(/logo.gif);
+   }
+
+//extends
+%message-shared {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
+}
+.message {
+  @extend %message-shared;
+}
+.success {
+  @extend %message-shared;
+  border-color: green;
+}
+.error {
+  border: 1px #f00;
+  background-color: #fdd;
+}
+.attention {
+  font-size: 3em;
+  background-color: #ff0;
+}
+.seriousError {
+  @extend .error;
+  @extend .attention;
+  border-width: 3px;
+}
+
+//math op
+.container {
+  width: 100%;
+}
+article[role="main"] {
+  float: left;
+  width: 600px / 960px * 100%;
+}
+aside[role="complementary"] {
+  float: right;
+  width: 300px / 960px * 100%;
+}
+
+//link parent
+#main {
+  font-weight: bold;
+  text-decoration: none;
+  &:hover { // #main:hover
+    text-decoration: underline;
+  }
+  body.firefox & { //body.firefox #main
+    font-weight: normal;
+  }
+  a {
+    font-weight: bold;
+    &:hover { //#main a:hover
+      color: red;
+    }
+  }
+}
+
+// вложенные св-ва
+.funky {
+  font: 20px/24px fantasy {
+    weight: bold;
+  }
+} =>
+   .funky {
+     font-family: fantasy;
+     font-size: 30em;
+     font-weight: bold;
+   }
+
+//if
+$menuOn: true;
+$menuDropDown: false;
+
+.menu li {
+  color: #ff0000;
+  text-decoration: underline;
+  @if $menuOn == true and $menuDropDown == true {
+    position: relative;
+  }
+}
+
+//interpolation
+$name: foo;
+$attr: border;
+p.#{$name} {
+  #{$attr}-color: blue;
+} =>
+   p.foo {
+     border-color: blue;
+   }
+
+//@media
+.sidebar {
+  width: 300px;
+  @media screen and (orientation: landscape) {
+    width: 500px;
+  }
+} =>
+   .sidebar {
+     width: 300px;
+   }
+  @media screen and (orientation: landscape) {
+    .sidebar {
+      width: 500px;
+    }
+  }
+
+//for
+@for $i from 1 through 3 {
+  .item-#{$i} {
+    width: 2em * $i;
+  }
+} =>
+.item-1 {
+   width: 2em;
+ }
+.item-2 {
+  width: 4em;
+}
+.item-3 {
+  width: 6em;
+}
+
+//array + each
+$status-colors: (
+        primary: #000,
+        success: #27BA6C,
+        info: #03a9f4,
+        warning: #FF8833,
+        danger: #ff1a1a
+);
+
+.message {
+  @each $status, $color in $status-colors {
+    &--#{$status} {
+      background: $color;
+    }
+  }
+}
+@each $animal in puma, sea-slug, egret, salamander {
+  .#{$animal}-icon {
+    background-image: url('/images/#{$animal}.png');
+  }
+} =>
+   .puma-icon {
+     background-image: url('/images/puma.png');
+   }
+  .sea-slug-icon {
+    background-image: url('/images/sea-slug.png');
+  }
+  .egret-icon {
+    background-image: url('/images/egret.png');
+  }
+  .salamander-icon {
+    background-image: url('/images/salamander.png');
+  }
+//while
+$i: 6;
+@while $i > 0 {
+  .item-#{$i} { width: 2em * $i; }
+  $i: $i - 2;
+}
+=>
+ .item-6 {
+   width: 12em;
+ }
+.item-4 {
+  width: 8em;
+}
+.item-2 {
+  width: 4em;
+}
+// functions
+$grid-width: 40px;
+$gutter-width: 10px;
+// есть доступ к глобальным переменным
+@function grid-width($n) {
+  @return $n * $grid-width + ($n - 1) * $gutter-width;
+}
+
+#sidebar {
+  width: grid-width(5);
+}

@@ -1,0 +1,41 @@
+https://twig.symfony.com/doc/3.x/
+
+-)extends:
+layout.twig:
+{% block test %}{% endblock %}
+
+{% extends ".../layout.twig" %}
+{% block test %} extends test {% endblock %}
+
+-)set
+{% set foo = 'foo' %}
+{% set foo = [1, 2] %}
+{% set foo = {'foo': 'bar'} %}
+{% set foo %}
+    <div id="pagination">
+        ...
+    </div>
+{% endset %}
+
+-)include
+{% include "template/pageContent/404.twig" %}
+{% set vars = {'foo': 'bar'} %}
+{% include 'template.html' with vars %}
+{% set content = include('template.html') %}
+
+-)for
+{% for key,value in list %}
+    {{ loop.index0 }} - {{ value }}
+{% endfor %}
+
+-)if
+{% if not user.subscribed %}
+    <p>You are not subscribed to our mailing list.</p>
+{% elseif product.stock > 0 %}
+    Only {{ product.stock }} left!
+{% else %}
+    Sold-out!
+{% endif %}
+
+-)defined
+{% if arr.name is defined %} {{ arr.name }} {% endif %}

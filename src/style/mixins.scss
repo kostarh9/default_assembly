@@ -1,0 +1,114 @@
+@use "sass:math";
+
+@import "variables";
+
+@mixin clearfix {
+  display: inline-block;
+
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  * html & {
+    height: 1px
+  }
+}
+
+@mixin media($size) {
+  @media (max-width: $size) {
+    @content;
+  }
+}
+
+@mixin media-min($size) {
+  @media (min-width: $size + 1px) {
+    @content;
+  }
+}
+
+@mixin desc() {
+  @media (max-width: $size-xl) {
+    @content;
+  }
+}
+
+@mixin tablet() {
+  @media (max-width: $size-lg) {
+    @content;
+  }
+}
+
+@mixin mobile() {
+  @media (max-width: $size-md) {
+    @content;
+  }
+}
+
+@function pxToVw($unit, $baseViewport: 1286) {
+  $vValue: math.div($unit, $baseViewport) * 100;
+  @return #{$vValue}vw;
+}
+
+@function pxToVh($unit, $baseViewport: 720) {
+  $vValue: math.div($unit, $baseViewport) * 100;
+  @return #{$vValue}vh;
+}
+
+@function pxToVmin($unit, $baseViewport: 720) {
+  $vValue: math.div($unit, $baseViewport) * 100;
+  @return #{$vValue}vmin;
+}
+
+@function pxToRem($unit) {
+  $rem: math.div($unit, $base-font-size);
+  @return #{$rem}rem;
+}
+
+@mixin parent($parent) {
+  .#{$parent} & {
+    @content;
+  }
+}
+
+@mixin placeholder() {
+  &::-moz-placeholder {
+    @content
+  }
+  &::-webkit-input-placeholder {
+    @content
+  }
+  &:-ms-input-placeholder {
+    @content
+  }
+  &::-ms-input-placeholder {
+    @content
+  }
+  &::placeholder {
+    @content
+  }
+}
+
+@mixin flex_justify($width, $wrap: wrap) {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: #{$wrap};
+  & > div {
+    width: $width;
+  }
+}
+
+@mixin grid-1-row($columns) {
+  $fractions:'';
+  @for $c from 1 through $columns {
+    $fractions : $fractions + 1fr + ' ';
+    & > div:nth-child(#{$c}) {
+      grid-row: 1;
+      grid-column: #{$c};
+    }
+  }
+  display: grid;
+  grid-template-columns: #{$fractions};
+}

@@ -1,0 +1,15 @@
+@mixin font-face($font-family, $font-file, $font-weight, $font-style: normal, $font-stretch: normal) {
+  @font-face {
+    font-family: $font-family;
+    src: local($font-file + '.eot');
+    src: url($font-file + '.eot?#iefix') format('embedded-opentype'),
+    url($font-file + '.woff2') format('woff2'),
+    url($font-file + '.woff') format('woff'),
+    url($font-file + '.ttf') format('truetype');
+    font-style: $font-style;
+    font-stretch: $font-stretch;
+  }
+}
+
+//@include font-face('Graphik LC Light Web', '../fonts/GraphikWeb/GraphikLC-Light-Web', 300);
+
